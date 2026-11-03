@@ -59,7 +59,7 @@ input.t.has{border-color:var(--accent)}
 .wh b{font-size:15px}
 .wh i{font-style:normal;font-size:12px;color:var(--muted)}
 .cell{display:flex;align-items:center;gap:10px;margin-bottom:8px}
-.cell em{font-style:normal;width:26px;height:26px;border-radius:8px;background:var(--soft);color:var(--accent);font-weight:800;font-size:13px;display:grid;place-items:center;flex:none}
+.cell em{font-style:normal;width:32px;height:26px;border-radius:8px;background:var(--soft);color:var(--accent);font-weight:800;font-size:13px;display:grid;place-items:center;flex:none}
 .ctl{display:flex;gap:8px}
 .ctl button{height:38px;min-width:46px;border-radius:12px;border:0;font:800 20px system-ui;cursor:pointer;color:#fff}
 .ctl .add{background:var(--ok)} .ctl .del{background:var(--warn)}
@@ -129,7 +129,7 @@ footer{position:fixed;left:0;right:0;bottom:0;padding:12px 16px calc(12px + env(
   }
   function buildTests(){
     var h = '', i;
-    for (i = 0; i < 35; i++) h += '<div class="row"><div class="n">' + (i + 1) + '</div>' + bubbles(i, 'ABCD') + '</div>';
+    for (i = 0; i < 35; i++) h += '<div class="row' + (i >= 32 ? ' six' : '') + '"><div class="n">' + (i + 1) + '</div>' + bubbles(i, i >= 32 ? 'ABCDEF' : 'ABCD') + '</div>';
     $('s1').innerHTML = h;
   }
   function buildNums(){
@@ -144,7 +144,7 @@ footer{position:fixed;left:0;right:0;bottom:0;padding:12px 16px calc(12px + env(
       var cells = st.w[k], c;
       h += '<div class="w"><div class="wh"><b>' + (41 + k) + '-masala</b><i>' + cells.length + ' ta javob</i></div>';
       for (c = 0; c < cells.length; c++) {
-        h += '<div class="cell"><em>' + 'ABCD'[c] + '</em><input class="t' + (cells[c] ? ' has' : '') + '" data-k="' + k + '" data-c="' + c + '" inputmode="decimal" autocomplete="off" maxlength="30" placeholder="Javob" value="' + esc(cells[c]) + '"></div>';
+        h += '<div class="cell"><em>' + 'abcd'[c] + ')</em><input class="t' + (cells[c] ? ' has' : '') + '" data-k="' + k + '" data-c="' + c + '" inputmode="decimal" autocomplete="off" maxlength="30" placeholder="Javob" value="' + esc(cells[c]) + '"></div>';
       }
       h += '<div class="ctl"><button type="button" class="add" data-k="' + k + '"' + (cells.length >= 4 ? ' disabled' : '') + '>+</button>' +
            '<button type="button" class="del" data-k="' + k + '"' + (cells.length <= 1 ? ' disabled' : '') + '>–</button></div></div>';
