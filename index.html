@@ -3,166 +3,324 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, viewport-fit=cover">
-<title>Javoblar varag'i</title>
+<title>Sertifikat imtihon</title>
 <script src="https://telegram.org/js/telegram-web-app.js"></script>
 <style>
 :root{
   --bg:#f5f0e6; --card:#fffdf8; --ink:#1f2433; --muted:#7a7468; --line:#e6dfd0;
-  --accent:#e0562a; --accent-ink:#fff; --soft:#fbe6dc; --ok:#2a8a6e; --warn:#c0392b;
-  --bubble:#fff; --shadow:0 1px 0 rgba(31,36,51,.04),0 6px 18px rgba(80,60,20,.08);
-}
-@media (prefers-color-scheme: dark){
-  :root:not([data-theme="light"]){
-    --bg:#15171f; --card:#1e212c; --ink:#f1ede4; --muted:#9a9686; --line:#2d3140;
-    --accent:#ff7a4d; --accent-ink:#1b1209; --soft:#3a2a24; --ok:#4fc3a1; --warn:#ff7a6b;
-    --bubble:#262a38; --shadow:0 6px 18px rgba(0,0,0,.35);
-  }
+  --accent:#e0562a; --accent-ink:#fff; --soft:#fbe6dc; --ok:#2a8a6e; --okbg:#dff2ea; --warn:#c0392b;
+  --bubble:#fff; --dark:#17333b; --shadow:0 1px 0 rgba(31,36,51,.04),0 6px 18px rgba(80,60,20,.08);
 }
 :root[data-theme="dark"]{
   --bg:#15171f; --card:#1e212c; --ink:#f1ede4; --muted:#9a9686; --line:#2d3140;
-  --accent:#ff7a4d; --accent-ink:#1b1209; --soft:#3a2a24; --ok:#4fc3a1; --warn:#ff7a6b;
-  --bubble:#262a38; --shadow:0 6px 18px rgba(0,0,0,.35);
+  --accent:#ff7a4d; --accent-ink:#1b1209; --soft:#3a2a24; --ok:#4fc3a1; --okbg:#1f3a33; --warn:#ff7a6b;
+  --bubble:#262a38; --dark:#0e2228; --shadow:0 6px 18px rgba(0,0,0,.35);
 }
 *{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
 html,body{margin:0}
-body{background:var(--bg);color:var(--ink);font:16px/1.4 system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;
-  padding-bottom:calc(110px + env(safe-area-inset-bottom))}
-header{position:sticky;top:0;z-index:5;background:var(--bg);padding:14px 16px 10px;border-bottom:1px solid var(--line)}
-.top{display:flex;align-items:center;justify-content:space-between;gap:12px}
-h1{margin:0;font-size:20px;letter-spacing:-.2px}
-h1 small{display:block;font-size:12px;font-weight:500;color:var(--muted);letter-spacing:.4px;text-transform:uppercase}
-.count{font-weight:700;font-size:14px;background:var(--soft);color:var(--accent);padding:6px 12px;border-radius:999px;white-space:nowrap}
-.bar{height:5px;background:var(--line);border-radius:9px;margin-top:10px;overflow:hidden}
-.bar i{display:block;height:100%;width:0;background:var(--accent);border-radius:9px;transition:width .25s}
-main{padding:14px 16px;max-width:560px;margin:0 auto}
-.sec{margin:18px 0 8px;display:flex;align-items:baseline;gap:8px}
-.sec b{font-size:13px;letter-spacing:.8px;text-transform:uppercase;color:var(--accent)}
+body{background:var(--bg);color:var(--ink);font:16px/1.4 system-ui,-apple-system,"Segoe UI",Roboto,sans-serif}
+button{font-family:inherit}
+.hide{display:none!important}
+
+/* ---------- ro'yxat ---------- */
+.hero{background:var(--dark);color:#fff;padding:18px 18px 16px}
+.hero small{display:block;opacity:.7;font-size:11px;letter-spacing:.1em;text-transform:uppercase}
+.hero b{display:block;font-size:21px;margin-top:3px}
+#list{padding:16px;max-width:560px;margin:0 auto}
+#list h2{margin:2px 0 4px;font-size:21px}
+#list .lead{color:var(--muted);font-size:14px;margin:0 0 14px}
+.grid{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.mc{background:var(--card);border:1px solid var(--line);border-radius:18px;padding:14px;min-height:112px;box-shadow:var(--shadow);position:relative;cursor:pointer}
+.mc .n{font-size:11px;color:var(--muted);font-weight:700;letter-spacing:.08em}
+.mc b{display:block;font-size:26px;margin:2px 0 8px;letter-spacing:-.5px}
+.bd{display:inline-block;font-size:12px;font-weight:800;padding:5px 10px;border-radius:99px}
+.bd.go{background:var(--soft);color:var(--accent)}
+.bd.soon{background:var(--line);color:var(--muted)}
+.bd.done{background:var(--okbg);color:var(--ok)}
+.bd.run{background:var(--accent);color:var(--accent-ink)}
+.mc.soon{opacity:.6;cursor:default}
+.mc .tah{position:absolute;right:10px;top:10px;border:0;background:var(--bg);border-radius:10px;font-size:16px;padding:6px 8px;cursor:pointer}
+.mc .tah.lock{opacity:.55}
+.foot{color:var(--muted);font-size:12px;text-align:center;margin:18px 0 6px}
+
+/* ---------- boshlash oynasi ---------- */
+.ov{position:fixed;inset:0;background:rgba(10,15,20,.55);display:none;align-items:flex-end;justify-content:center;z-index:30}
+.ov.show{display:flex}
+.sheet{background:var(--card);width:100%;max-width:560px;border-radius:26px 26px 0 0;padding:22px 18px calc(20px + env(safe-area-inset-bottom))}
+.sheet h3{margin:0 0 6px;font-size:21px}
+.sheet p{margin:0 0 14px;color:var(--muted);font-size:14px}
+.chips{display:flex;gap:8px;margin:0 0 16px}
+.chip{flex:1;background:var(--bg);border-radius:12px;padding:10px;text-align:center;font-size:12px;color:var(--muted)}
+.chip b{display:block;font-size:19px;color:var(--ink)}
+.btns{display:flex;gap:10px}
+.btns button{flex:1;height:50px;border-radius:14px;border:0;font:800 16px system-ui;cursor:pointer}
+.b1{background:var(--accent);color:var(--accent-ink)} .b2{background:var(--bg);color:var(--ink)}
+
+/* ---------- test ---------- */
+#test{padding-bottom:calc(90px + env(safe-area-inset-bottom))}
+.bar{position:sticky;top:0;z-index:10;background:var(--card);border-bottom:1px solid var(--line);padding:10px 14px;display:flex;align-items:center;gap:10px}
+.bar .back{border:0;background:var(--bg);width:38px;height:38px;border-radius:12px;font-size:20px;color:var(--ink);cursor:pointer}
+.bar .tt{flex:1;min-width:0}
+.bar .tt b{display:block;font-size:15px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.bar .tm{font-size:13px;font-weight:800;color:var(--accent)}
+.bar .tm.low{color:var(--warn)}
+.fin{border:0;background:var(--accent);color:var(--accent-ink);font:800 14px system-ui;padding:11px 14px;border-radius:12px;cursor:pointer}
+.pg{margin:12px 12px 0;background:#fff;border-radius:12px;border:1px solid var(--line);overflow:hidden;box-shadow:var(--shadow)}
+.pg img{display:block;width:100%;height:auto}
+.pg .pl{padding:6px 10px;font-size:11px;font-weight:700;color:#8a8473;background:#f3efe6;letter-spacing:.06em}
+#zoomv{position:fixed;inset:0;background:#111;z-index:40;overflow:auto;display:none}
+#zoomv.show{display:block}
+#zoomv img{width:230%;max-width:none;display:block;background:#fff}
+#zoomv .x{position:fixed;right:12px;top:12px;z-index:41;border:0;border-radius:12px;background:rgba(0,0,0,.65);color:#fff;font:800 15px system-ui;padding:10px 14px}
+.fab{position:fixed;left:14px;right:14px;bottom:calc(14px + env(safe-area-inset-bottom));z-index:12;max-width:532px;margin:0 auto;
+  border:0;border-radius:16px;background:var(--dark);color:#fff;font:800 16px system-ui;padding:16px;cursor:pointer;box-shadow:0 8px 22px rgba(0,0,0,.28)}
+
+/* ---------- javob varag'i ---------- */
+#sheetA{position:fixed;left:0;right:0;bottom:0;top:96px;z-index:25;background:var(--card);border-radius:24px 24px 0 0;
+  box-shadow:0 -12px 34px rgba(0,0,0,.28);display:none;flex-direction:column;max-width:600px;margin:0 auto}
+#sheetA.show{display:flex}
+#sheetA .hd{display:flex;align-items:center;justify-content:space-between;padding:14px 16px 8px}
+#sheetA .hd b{font-size:17px}
+#sheetA .hd span{font-weight:800;font-size:13px;background:var(--soft);color:var(--accent);padding:6px 12px;border-radius:99px}
+#sheetA .cl{border:0;background:var(--bg);border-radius:10px;padding:8px 12px;font:800 14px system-ui;color:var(--ink);cursor:pointer}
+#scroll{overflow:auto;padding:0 14px 20px;flex:1}
+.sec{margin:16px 0 6px;display:flex;align-items:baseline;gap:8px}
+.sec b{font-size:12px;letter-spacing:.8px;text-transform:uppercase;color:var(--accent)}
 .sec span{font-size:12px;color:var(--muted)}
-.card{background:var(--card);border-radius:18px;box-shadow:var(--shadow);padding:6px 14px}
-.row{display:flex;align-items:center;gap:10px;padding:9px 0;border-bottom:1px dashed var(--line)}
+.card{background:var(--bg);border-radius:16px;padding:4px 12px}
+.row{display:flex;align-items:center;gap:10px;padding:8px 0;border-bottom:1px dashed var(--line)}
 .row:last-child{border-bottom:0}
-.n{width:30px;font-weight:700;font-size:15px;color:var(--muted);text-align:right;flex:none}
-.opts{display:flex;gap:10px;flex:1;justify-content:space-between;max-width:290px}
+.n{width:28px;font-weight:700;font-size:15px;color:var(--muted);text-align:right;flex:none}
+.opts{display:flex;gap:9px;flex:1;justify-content:space-between;max-width:290px}
 .o{width:44px;height:44px;border-radius:50%;border:2px solid var(--line);background:var(--bubble);color:var(--muted);
-  font:700 15px system-ui;display:grid;place-items:center;cursor:pointer;transition:transform .08s,background .15s,border-color .15s;padding:0}
+  font:700 15px system-ui;display:grid;place-items:center;cursor:pointer;transition:transform .08s,background .15s;padding:0}
 .o:active{transform:scale(.9)}
 .o.on{background:var(--accent);border-color:var(--accent);color:var(--accent-ink);box-shadow:0 3px 10px rgba(224,86,42,.35)}
-.rowx{display:flex;align-items:center;gap:10px;padding:9px 0;border-bottom:1px dashed var(--line)}
+.six .opts{gap:5px}.six .o{width:38px;height:38px;font-size:14px}
+.rowx{display:flex;align-items:center;gap:10px;padding:8px 0;border-bottom:1px dashed var(--line)}
 .rowx:last-child{border-bottom:0}
-input.t{flex:1;min-width:0;height:44px;border-radius:12px;border:2px solid var(--line);background:var(--bubble);color:var(--ink);
-  font:600 17px system-ui;padding:0 12px;outline:0}
-input.t:focus{border-color:var(--accent)}
-input.t.has{border-color:var(--accent)}
+input.t{flex:1;min-width:0;height:44px;border-radius:12px;border:2px solid var(--line);background:var(--bubble);color:var(--ink);font:600 17px system-ui;padding:0 12px;outline:0}
+input.t:focus,input.t.has{border-color:var(--accent)}
 .w{padding:12px 0;border-bottom:1px dashed var(--line)}
 .w:last-child{border-bottom:0}
 .wh{display:flex;align-items:center;justify-content:space-between;margin-bottom:8px}
-.wh b{font-size:15px}
-.wh i{font-style:normal;font-size:12px;color:var(--muted)}
+.wh b{font-size:15px}.wh i{font-style:normal;font-size:12px;color:var(--muted)}
 .cell{display:flex;align-items:center;gap:10px;margin-bottom:8px}
 .cell em{font-style:normal;width:32px;height:26px;border-radius:8px;background:var(--soft);color:var(--accent);font-weight:800;font-size:13px;display:grid;place-items:center;flex:none}
 .ctl{display:flex;gap:8px}
 .ctl button{height:38px;min-width:46px;border-radius:12px;border:0;font:800 20px system-ui;cursor:pointer;color:#fff}
-.ctl .add{background:var(--ok)} .ctl .del{background:var(--warn)}
-.ctl button:disabled{opacity:.3}
-footer{position:fixed;left:0;right:0;bottom:0;padding:12px 16px calc(12px + env(safe-area-inset-bottom));
-  background:linear-gradient(to top,var(--bg) 70%,transparent)}
-#send{display:block;width:100%;max-width:560px;margin:0 auto;height:54px;border:0;border-radius:16px;background:var(--accent);
-  color:var(--accent-ink);font:800 17px system-ui;letter-spacing:.2px;cursor:pointer;box-shadow:0 8px 22px rgba(224,86,42,.35)}
-#send:active{transform:scale(.98)}
-.ov{position:fixed;inset:0;background:rgba(10,10,20,.55);display:none;align-items:flex-end;justify-content:center;z-index:20}
-.ov.show{display:flex}
-.sheet{background:var(--card);width:100%;max-width:560px;border-radius:24px 24px 0 0;padding:22px 18px calc(20px + env(safe-area-inset-bottom))}
-.sheet h2{margin:0 0 6px;font-size:19px}
-.sheet p{margin:0 0 16px;color:var(--muted)}
-.btns{display:flex;gap:10px}
-.btns button{flex:1;height:50px;border-radius:14px;border:0;font:700 16px system-ui;cursor:pointer}
-.b1{background:var(--accent);color:var(--accent-ink)} .b2{background:var(--soft);color:var(--accent)}
-#dbg{white-space:pre-wrap;word-break:break-all;font:12px monospace;background:var(--card);padding:10px;border-radius:12px;margin-top:14px;display:none}
+.ctl .add{background:var(--ok)}.ctl .del{background:var(--warn)}.ctl button:disabled{opacity:.3}
+.send{display:block;width:100%;height:54px;border:0;border-radius:16px;background:var(--accent);color:var(--accent-ink);font:800 17px system-ui;margin-top:18px;cursor:pointer}
+#toast{position:fixed;left:50%;bottom:90px;transform:translateX(-50%);background:#222;color:#fff;padding:10px 16px;border-radius:12px;font-size:14px;z-index:60;display:none;max-width:86%;text-align:center}
+#dbg{white-space:pre-wrap;word-break:break-all;font:12px monospace;background:var(--card);padding:10px;border-radius:12px;margin:12px;display:none}
 </style>
 </head>
 <body>
-<header>
-  <div class="top">
-    <h1><small>Javoblar varag'i</small><span id="ttl">Mock</span></h1>
-    <div class="count" id="cnt">0 / 40</div>
-  </div>
-  <div class="bar"><i id="bar"></i></div>
-</header>
-<main>
-  <div class="sec"><b>Test</b><span>1–35 · bitta javob (A–D)</span></div>
-  <div class="card" id="s1"></div>
-  <div class="sec"><b>Qisqa javob</b><span>36–40 · raqam yozing (3,6 yoki 3.6)</span></div>
-  <div class="card" id="s3"></div>
-  <div class="sec"><b>Yozma ish</b><span>41–43 · har bir javobga alohida katak</span></div>
-  <div class="card" id="s4"></div>
-  <div id="dbg"></div>
-</main>
-<footer><button id="send" type="button">Yuborish ✈️</button></footer>
 
-<div class="ov" id="ov"><div class="sheet">
-  <h2 id="ovT">Yuborishga tayyormisiz?</h2><p id="ovP"></p>
-  <div class="btns"><button class="b2" id="back" type="button">Tekshirib chiqaman</button><button class="b1" id="go" type="button">Yuborish</button></div>
+<!-- ============ RO'YXAT ============ -->
+<section id="list">
+  <div class="hero" style="margin:-16px -16px 16px"><small>Biologiya Tayyorlov Kursi</small><b>Sertifikat imtihon (RASH)</b></div>
+  <h2>Mockni tanlang</h2>
+  <p class="lead">Testni yeching, javoblarni varaqqa belgilab «Yakunlash» ni bosing. Natija va darajangiz darhol chatda chiqadi. 🎥 Mock tahlili testni ishlab bo'lgach ochiladi.</p>
+  <div class="grid" id="grid"></div>
+  <div class="foot">Imtihon vaqti — 3 soat</div>
+</section>
+
+<!-- ============ TEST ============ -->
+<section id="test" class="hide">
+  <div class="bar">
+    <button class="back" id="bk" type="button">‹</button>
+    <div class="tt"><b id="ttl">Mock</b><span class="tm" id="tm">⏳ 3:00:00</span></div>
+    <button class="fin" id="fin" type="button">Yakunlash</button>
+  </div>
+  <div id="pages"></div>
+  <button class="fab" id="fab" type="button">Javob varaqasi · 0 / 43 ▲</button>
+</section>
+
+<div id="sheetA">
+  <div class="hd"><b id="shT">Javob varag'i</b><span id="cnt">0 / 43</span><button class="cl" id="cl" type="button">Yopish ▼</button></div>
+  <div id="scroll">
+    <div class="sec"><b>Test</b><span>1–32 · bitta javob (A–D)</span></div><div class="card" id="s1"></div>
+    <div class="sec"><b>Moslashtirish</b><span>33–35 · A–F</span></div><div class="card" id="s2"></div>
+    <div class="sec"><b>Qisqa javob</b><span>36–40 · raqam yozing (3,6 yoki 3.6)</span></div><div class="card" id="s3"></div>
+    <div class="sec"><b>Yozma ish</b><span>41–43 · har bir javobga alohida katak</span></div><div class="card" id="s4"></div>
+    <button class="send" id="send" type="button">Yakunlash va tekshirish ✈️</button>
+  </div>
+</div>
+
+<div class="ov" id="ovStart"><div class="sheet">
+  <h3 id="stT">Mock</h3>
+  <p>Imtihon vaqti — <b>3 soat</b>. «Boshlash» bosilgach vaqt to'xtamaydi: ilovadan chiqib ketsangiz ham hisoblanaveradi. Vaqt tugaganda javoblaringiz avtomatik tekshiriladi.</p>
+  <div class="chips"><div class="chip"><b>35</b>test</div><div class="chip"><b>5</b>raqamli</div><div class="chip"><b>3</b>masala</div></div>
+  <div class="btns"><button class="b2" id="stNo" type="button">Bekor qilish</button><button class="b1" id="stGo" type="button">Boshlash</button></div>
 </div></div>
+
+<div class="ov" id="ovSend"><div class="sheet">
+  <h3>Yakunlaysizmi?</h3><p id="sP"></p>
+  <div class="btns"><button class="b2" id="sBack" type="button">Tekshirib chiqaman</button><button class="b1" id="sGo" type="button">Yakunlash</button></div>
+</div></div>
+
+<div id="zoomv"><button class="x" id="zx" type="button">Yopish ✕</button><img id="zimg" alt=""></div>
+<div id="toast"></div>
+<div id="dbg"></div>
 
 <script>
 (function(){
   var tg = window.Telegram && window.Telegram.WebApp;
-  var q = new URLSearchParams(location.search);
-  var M = parseInt(q.get('m'), 10) || 0;
-  var KEY = 'mock_draft_' + M;
-  document.getElementById('ttl').textContent = M ? 'Mock ' + M : 'Mock';
-  if (tg) {
-    try { tg.ready(); tg.expand(); if (tg.colorScheme) document.documentElement.setAttribute('data-theme', tg.colorScheme === 'dark' ? 'dark' : 'light'); } catch (e) {}
-  }
+  var IDS = []; for (var i = 101; i <= 112; i++) IDS.push(i);
+  var DUR = 3 * 3600 * 1000;
+  if (tg) { try { tg.ready(); tg.expand(); document.documentElement.setAttribute('data-theme', tg.colorScheme === 'dark' ? 'dark' : 'light'); } catch (e) {} }
 
-  var st = { a: new Array(35).fill(''), n: ['', '', '', '', ''], w: [[''], [''], ['']] };
-  try { var d = JSON.parse(localStorage.getItem(KEY) || 'null'); if (d && d.a && d.n && d.w) st = d; } catch (e) {}
-  function save(){ try { localStorage.setItem(KEY, JSON.stringify(st)); } catch (e) {} }
   function $(id){ return document.getElementById(id); }
+  function lsGet(k){ try { return localStorage.getItem(k); } catch (e) { return null; } }
+  function lsSet(k, v){ try { localStorage.setItem(k, v); } catch (e) {} }
+  function lsDel(k){ try { localStorage.removeItem(k); } catch (e) {} }
+  function esc(s){ return String(s).replace(/&/g, '&amp;').replace(/"/g, '&quot;').replace(/</g, '&lt;'); }
+  function toast(t){ var e = $('toast'); e.textContent = t; e.style.display = 'block'; setTimeout(function(){ e.style.display = 'none'; }, 2600); }
 
+  var ready = {};      // id -> true/false
+  var cur = 0, st = null, timer = null;
+
+  /* ---------- ro'yxat ---------- */
+  function fmtLeft(ms){
+    var s = Math.max(0, Math.floor(ms / 1000)), h = Math.floor(s / 3600), m = Math.floor(s % 3600 / 60), x = s % 60;
+    return h + ':' + (m < 10 ? '0' : '') + m + ':' + (x < 10 ? '0' : '') + x;
+  }
+  function state(id){
+    var done = lsGet('mk_done_' + id) === '1', start = parseInt(lsGet('mk_start_' + id), 10) || 0;
+    var run = start && !done && Date.now() - start < DUR;
+    var exp = start && !done && Date.now() - start >= DUR;
+    return { done: done, run: run, exp: exp, start: start };
+  }
+  function buildList(){
+    var h = '';
+    IDS.forEach(function(id){
+      var s = state(id), ok = ready[id];
+      var badge, cls = 'mc';
+      if (ok === undefined) badge = '<span class="bd soon">…</span>';
+      else if (!ok) { badge = '<span class="bd soon">⏳ Tez orada</span>'; cls += ' soon'; }
+      else if (s.done) badge = '<span class="bd done">✓ Yuborilgan</span>';
+      else if (s.run) badge = '<span class="bd run">Davom etish →</span>';
+      else if (s.exp) badge = '<span class="bd run">Vaqt tugagan</span>';
+      else badge = '<span class="bd go">Boshlash →</span>';
+      var tah = ok ? '<button class="tah' + (s.done ? '' : ' lock') + '" data-t="' + id + '" type="button">' + (s.done ? '🎥' : '🔒') + '</button>' : '';
+      h += '<div class="' + cls + '" data-id="' + id + '">' + tah + '<div class="n">MOCK</div><b>' + id + '</b>' + badge + '</div>';
+    });
+    $('grid').innerHTML = h;
+  }
+  function probe(id){
+    var im = new Image();
+    im.onload = function(){ ready[id] = true; buildList(); };
+    im.onerror = function(){ ready[id] = false; buildList(); };
+    im.src = 'm/' + id + '/1.jpg?v=' + Date.now();
+  }
+  $('grid').addEventListener('click', function(e){
+    var t = e.target.closest('.tah');
+    if (t) {
+      e.stopPropagation();
+      var id = +t.dataset.t;
+      if (!state(id).done) { toast('🔒 Mock tahlili testni ishlab, javoblarni yuborgach ochiladi'); return; }
+      send({ z: id });
+      return;
+    }
+    var c = e.target.closest('.mc'); if (!c) return;
+    var id2 = +c.dataset.id;
+    if (!ready[id2]) { if (ready[id2] === false) toast('Bu mock tez orada qo\'shiladi ⏳'); return; }
+    var s = state(id2);
+    if (s.run || s.exp) { openTest(id2); return; }
+    $('stT').textContent = 'Mock ' + id2 + (s.done ? ' (qayta ishlash)' : '');
+    $('ovStart').dataset.id = id2; $('ovStart').classList.add('show');
+  });
+  $('stNo').onclick = function(){ $('ovStart').classList.remove('show'); };
+  $('stGo').onclick = function(){
+    var id = +$('ovStart').dataset.id;
+    lsSet('mk_start_' + id, String(Date.now())); lsDel('mk_done_' + id); lsDel('mk_ans_' + id);
+    $('ovStart').classList.remove('show'); openTest(id);
+  };
+
+  /* ---------- test ---------- */
+  function load(id){
+    st = { a: new Array(35).fill(''), n: ['', '', '', '', ''], w: [[''], [''], ['']] };
+    try { var d = JSON.parse(lsGet('mk_ans_' + id) || 'null'); if (d && d.a && d.n && d.w) st = d; } catch (e) {}
+  }
+  function save(){ lsSet('mk_ans_' + cur, JSON.stringify(st)); }
+  function openTest(id){
+    cur = id; load(id);
+    $('list').classList.add('hide'); $('test').classList.remove('hide');
+    $('ttl').textContent = 'Mock ' + id;
+    $('pages').innerHTML = '';
+    addPage(1);
+    buildAll(); refresh();
+    var s = state(id);
+    if (s.exp) { submit(true); return; }
+    tick(); clearInterval(timer); timer = setInterval(tick, 1000);
+    window.scrollTo(0, 0);
+  }
+  function addPage(n){
+    var wrap = document.createElement('div'); wrap.className = 'pg';
+    var im = new Image();
+    im.onload = function(){
+      wrap.innerHTML = '<div class="pl">' + n + '-SAHIFA</div>'; wrap.appendChild(im);
+      im.addEventListener('click', function(){ $('zimg').src = im.src; $('zoomv').classList.add('show'); });
+      addPage(n + 1);
+    };
+    im.onerror = function(){ if (n === 1) { wrap.innerHTML = '<div class="pl">Test sahifalari topilmadi</div>'; } else wrap.remove(); };
+    $('pages').appendChild(wrap);
+    im.src = 'm/' + cur + '/' + n + '.jpg';
+  }
+  $('zx').onclick = function(){ $('zoomv').classList.remove('show'); };
+  function tick(){
+    var left = DUR - (Date.now() - (parseInt(lsGet('mk_start_' + cur), 10) || Date.now()));
+    if (left <= 0) { clearInterval(timer); submit(true); return; }
+    var e = $('tm'); e.textContent = '⏳ ' + fmtLeft(left) + ' qoldi'; e.classList.toggle('low', left < 10 * 60 * 1000);
+  }
+  function leave(){
+    clearInterval(timer); $('test').classList.add('hide'); $('list').classList.remove('hide'); $('sheetA').classList.remove('show');
+    buildList(); window.scrollTo(0, 0);
+  }
+  $('bk').onclick = leave;
+
+  /* ---------- javob varag'i ---------- */
   function bubbles(i, letters){
     var h = '<div class="opts">';
-    for (var k = 0; k < letters.length; k++) {
+    for (var k = 0; k < letters.length; k++)
       h += '<button type="button" class="o' + (st.a[i] === letters[k] ? ' on' : '') + '" data-i="' + i + '" data-v="' + letters[k] + '">' + letters[k] + '</button>';
-    }
     return h + '</div>';
   }
-  function buildTests(){
+  function buildAll(){
     var h = '', i;
-    for (i = 0; i < 35; i++) h += '<div class="row' + (i >= 32 ? ' six' : '') + '"><div class="n">' + (i + 1) + '</div>' + bubbles(i, i >= 32 ? 'ABCDEF' : 'ABCD') + '</div>';
-    $('s1').innerHTML = h;
-  }
-  function buildNums(){
-    var h = '';
+    for (i = 0; i < 32; i++) h += '<div class="row"><div class="n">' + (i + 1) + '</div>' + bubbles(i, 'ABCD') + '</div>';
+    $('s1').innerHTML = h; h = '';
+    for (i = 32; i < 35; i++) h += '<div class="row six"><div class="n">' + (i + 1) + '</div>' + bubbles(i, 'ABCDEF') + '</div>';
+    $('s2').innerHTML = h; h = '';
     for (var j = 0; j < 5; j++) h += '<div class="rowx"><div class="n">' + (36 + j) + '</div><input class="t' + (st.n[j] ? ' has' : '') + '" data-n="' + j + '" inputmode="decimal" autocomplete="off" maxlength="20" placeholder="Javob" value="' + esc(st.n[j]) + '"></div>';
     $('s3').innerHTML = h;
+    buildW();
   }
-  function esc(s){ return String(s).replace(/&/g, '&amp;').replace(/"/g, '&quot;').replace(/</g, '&lt;'); }
   function buildW(){
     var h = '';
     for (var k = 0; k < 3; k++) {
       var cells = st.w[k], c;
       h += '<div class="w"><div class="wh"><b>' + (41 + k) + '-masala</b><i>' + cells.length + ' ta javob</i></div>';
-      for (c = 0; c < cells.length; c++) {
+      for (c = 0; c < cells.length; c++)
         h += '<div class="cell"><em>' + 'abcd'[c] + ')</em><input class="t' + (cells[c] ? ' has' : '') + '" data-k="' + k + '" data-c="' + c + '" inputmode="decimal" autocomplete="off" maxlength="30" placeholder="Javob" value="' + esc(cells[c]) + '"></div>';
-      }
-      h += '<div class="ctl"><button type="button" class="add" data-k="' + k + '"' + (cells.length >= 4 ? ' disabled' : '') + '>+</button>' +
-           '<button type="button" class="del" data-k="' + k + '"' + (cells.length <= 1 ? ' disabled' : '') + '>–</button></div></div>';
+      h += '<div class="ctl"><button type="button" class="add" data-k="' + k + '"' + (cells.length >= 4 ? ' disabled' : '') + '>+</button><button type="button" class="del" data-k="' + k + '"' + (cells.length <= 1 ? ' disabled' : '') + '>–</button></div></div>';
     }
     $('s4').innerHTML = h;
   }
   function counts(){
     var a = st.a.filter(Boolean).length, n = st.n.filter(function(x){ return x.trim(); }).length;
     var w = st.w.filter(function(c){ return c.some(function(x){ return x.trim(); }); }).length;
-    return { a: a, n: n, w: w, done: a + n + w, total: 35 + 5 + 3 };
+    return { a: a, n: n, w: w, done: a + n + w, total: 43 };
   }
   function refresh(){
     var c = counts();
-    $('cnt').textContent = c.done + ' / ' + c.total;
-    $('bar').style.width = Math.round(c.done * 100 / c.total) + '%';
+    $('cnt').textContent = c.done + ' / 43';
+    $('fab').textContent = 'Javob varaqasi · ' + c.done + ' / 43 ▲';
   }
-
-  document.addEventListener('click', function(e){
+  $('fab').onclick = function(){ $('sheetA').classList.add('show'); };
+  $('cl').onclick = function(){ $('sheetA').classList.remove('show'); };
+  $('sheetA').addEventListener('click', function(e){
     var t = e.target.closest('button'); if (!t) return;
     if (t.classList.contains('o')) {
       var i = +t.dataset.i, v = t.dataset.v;
@@ -176,36 +334,42 @@ footer{position:fixed;left:0;right:0;bottom:0;padding:12px 16px calc(12px + env(
       var k2 = +t.dataset.k; if (st.w[k2].length > 1) { st.w[k2].pop(); save(); buildW(); refresh(); }
     }
   });
-  document.addEventListener('input', function(e){
-    var t = e.target; if (!t.classList.contains('t')) return;
-    var v = t.value.replace(/[^0-9.,\-+\/%a-zA-Z\s]/g, '');
-    if (v !== t.value) t.value = v;
-    t.classList.toggle('has', !!v.trim());
-    if (t.dataset.n !== undefined) st.n[+t.dataset.n] = v;
-    else st.w[+t.dataset.k][+t.dataset.c] = v;
+  $('sheetA').addEventListener('input', function(e){
+    var el = e.target; if (el.tagName !== 'INPUT') return;
+    if (el.dataset.n !== undefined) st.n[+el.dataset.n] = el.value;
+    else if (el.dataset.k !== undefined) st.w[+el.dataset.k][+el.dataset.c] = el.value;
+    el.classList.toggle('has', !!el.value.trim());
     save(); refresh();
   });
 
+  /* ---------- yuborish ---------- */
   function payload(){
-    var w = st.w.map(function(c){ var x = c.map(function(s){ return s.trim(); }); while (x.length && !x[x.length - 1]) x.pop(); return x; });
-    return { v: 1, m: M, a: st.a.map(function(x){ return x || '-'; }).join(''), n: st.n.map(function(s){ return s.trim(); }), w: w };
+    return { m: cur, a: st.a.map(function(x){ return x || '-'; }).join(''), n: st.n.map(function(x){ return x.trim(); }),
+             w: st.w.map(function(c){ return c.map(function(x){ return x.trim(); }); }) };
   }
-  function ask(){
-    var c = counts(), left = (35 - c.a) + (5 - c.n) + (3 - c.w);
-    $('ovT').textContent = left ? 'Hali javob berilmagan joylar bor' : 'Yuborishga tayyormisiz?';
-    $('ovP').textContent = left ? ('Belgilanmagan: ' + left + ' ta. Yuborsangiz, ular xato hisoblanadi.') : 'Yuborgandan so\'ng natijangiz botda ko\'rinadi.';
-    $('ov').classList.add('show');
+  function send(obj){
+    var txt = JSON.stringify(obj);
+    if (tg && tg.sendData) { tg.sendData(txt); }
+    else { var d = $('dbg'); d.style.display = 'block'; d.textContent = 'Telegram tashqarisida. Yuboriladigan ma\'lumot:\n' + txt; }
   }
-  $('send').addEventListener('click', ask);
-  $('back').addEventListener('click', function(){ $('ov').classList.remove('show'); });
-  $('go').addEventListener('click', function(){
-    $('ov').classList.remove('show');
-    var p = JSON.stringify(payload());
-    if (tg && tg.sendData) { try { localStorage.removeItem(KEY); } catch (e) {} tg.sendData(p); }
-    else { var d = $('dbg'); d.style.display = 'block'; d.textContent = 'Telegramdan tashqarida ochilgan. Yuboriladigan ma\'lumot:\n' + p; d.scrollIntoView(); }
-  });
+  function submit(auto){
+    clearInterval(timer);
+    lsSet('mk_done_' + cur, '1'); save();
+    if (auto) toast('Vaqt tugadi — javoblar yuborilmoqda');
+    send(payload());
+  }
+  function askSubmit(){
+    var c = counts(), left = c.total - c.done;
+    $('sP').textContent = left > 0 ? ('Javob berilmagan: ' + left + ' ta (ular xato hisoblanadi).') : 'Barcha savollarga javob berdingiz.';
+    $('ovSend').classList.add('show');
+  }
+  $('fin').onclick = askSubmit; $('send').onclick = askSubmit;
+  $('sBack').onclick = function(){ $('ovSend').classList.remove('show'); };
+  $('sGo').onclick = function(){ $('ovSend').classList.remove('show'); submit(false); };
 
-  buildTests(); buildNums(); buildW(); refresh();
+  buildList();
+  IDS.forEach(probe);
+  setInterval(function(){ if (!$('list').classList.contains('hide')) buildList(); }, 30000);
 })();
 </script>
 </body>
