@@ -429,9 +429,9 @@ img{-webkit-user-drag:none;user-drag:none;-webkit-touch-callout:none}
         else toast((r && r.reason) || 'Xatolik');
       }
     }).catch(function(){
-      // server bilan aloqa yo'q — eski usul (oyna yopiladi, lekin natija baribir yetib boradi)
-      var o = document.getElementById('resOv'); if (o) o.remove();
-      legacySend(obj);
+      if (!isSubmit) { toast('Server bilan aloqa yo\'q. Birozdan keyin urinib ko\'ring.'); return; }
+      ovl('<div style="font-size:34px">\ud83d\udcf6</div><div style="font-size:16px;margin:8px 0">Server bilan aloqa yo\'q. Javoblaringiz saqlangan, internetni tekshirib qayta yuboring.</div><button id="rsRe" style="' + BTN + 'background:#0f4c5c;color:#fff">Qayta yuborish</button>');
+      document.getElementById('rsRe').onclick = function(){ send(obj); };
     });
   }
   function submit(auto){
