@@ -399,7 +399,7 @@ img{-webkit-user-drag:none;user-drag:none;-webkit-touch-callout:none}
     h += '<button id="rsMap" style="' + BTN + 'background:#0f4c5c;color:#fff">\ud83d\udcca Savollar xaritasi</button>';
     h += '<button id="rsList" style="' + BTN + 'background:#e8f0f2;color:#0f4c5c">Mocklar ro\'yxati</button>';
     ovl(h);
-    document.getElementById('rsCert').onclick = function(){ send({ cert: r.m }); };
+    document.getElementById('rsCert').onclick = function(){ send({ cert: r.aid }); };
     document.getElementById('rsMap').onclick = function(){ location.href = r.url; };
     document.getElementById('rsList').onclick = function(){ location.reload(); };
   }
