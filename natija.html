@@ -37,6 +37,7 @@ body{background:var(--bg);color:var(--ink);font:16px/1.4 system-ui,-apple-system
 (function(){
   var tg=window.Telegram&&Telegram.WebApp;
   if(tg){try{tg.ready();tg.expand();document.documentElement.setAttribute('data-theme',tg.colorScheme==='dark'?'dark':'light');}catch(e){}}
+  try{if(tg&&history.length>1&&tg.BackButton){tg.BackButton.show();tg.BackButton.onClick(function(){history.back();});}}catch(e){}
   function ok(e){var t=e.target;return t&&t.closest&&t.closest('input,textarea');}
   ['contextmenu','copy','cut','dragstart','selectstart'].forEach(function(ev){document.addEventListener(ev,function(e){if(!ok(e))e.preventDefault();},true);});
   var root=document.getElementById('root');

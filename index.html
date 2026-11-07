@@ -373,10 +373,66 @@ img{-webkit-user-drag:none;user-drag:none;-webkit-touch-callout:none}
     return { m: cur, e: Math.min(el_, 10800), a: st.a.map(function(x){ return x || '-'; }).join(''), n: st.n.map(function(x){ return x.trim(); }),
              w: st.w.map(function(c){ return c.map(function(x){ return x.trim(); }); }) };
   }
-  function send(obj){
+  var API = 'https://biodars-nigora.duckdns.org/api/submit';
+  function legacySend(obj){
     var txt = JSON.stringify(obj);
     if (tg && tg.sendData) { tg.sendData(txt); }
     else { var d = $('dbg'); d.style.display = 'block'; d.textContent = 'Telegram tashqarisida. Yuboriladigan ma\'lumot:\n' + txt; }
+  }
+  function ovl(html){
+    var o = document.getElementById('resOv');
+    if (!o) {
+      o = document.createElement('div'); o.id = 'resOv';
+      o.style.cssText = 'position:fixed;inset:0;z-index:9999;background:rgba(10,20,26,.72);display:flex;align-items:center;justify-content:center;padding:20px;font-family:system-ui,sans-serif';
+      document.body.appendChild(o);
+    }
+    o.innerHTML = '<div style="background:#fff;color:#1b2a33;border-radius:18px;padding:24px 20px;max-width:380px;width:100%;text-align:center;box-shadow:0 10px 40px rgba(0,0,0,.35)">' + html + '</div>';
+    return o;
+  }
+  var BTN = 'display:block;width:100%;margin-top:10px;padding:13px;border:0;border-radius:12px;font-size:16px;font-weight:600;cursor:pointer;';
+  function showResult(r){
+    var h = '<div style="font-size:42px">\u2705</div><div style="font-size:19px;font-weight:700;margin:6px 0">Javoblar qabul qilindi</div>';
+    h += '<div style="font-size:15px;color:#4a5b66">Ball: <b style="color:#0f4c5c;font-size:20px">' + r.b + '</b>' + (r.lv ? ' \u00b7 Daraja: <b>' + r.lv + '</b>' : ' \u00b7 sertifikat darajasiga yetmadi') + '</div>';
+    if (r.r) h += '<div style="margin-top:6px;font-size:15px">' + (r.f ? '\ud83c\udfc6 Reyting: <b>' + r.r[0] + ' / ' + r.r[1] + '</b>' : '\ud83d\udd01 Qayta urinish \u2014 reytingga kirmaydi') + '</div>';
+    h += '<div style="margin-top:10px;font-size:13px;color:#6b7b85">To\'liq natija, sertifikat va tahlil tugmalari botga ham yuborildi \ud83d\udce9</div>';
+    h += '<button id="rsMap" style="' + BTN + 'background:#0f4c5c;color:#fff">\ud83d\udcca Savollar xaritasi</button>';
+    h += '<button id="rsList" style="' + BTN + 'background:#e8f0f2;color:#0f4c5c">Mocklar ro\'yxati</button>';
+    ovl(h);
+    document.getElementById('rsMap').onclick = function(){ location.href = r.url; };
+    document.getElementById('rsList').onclick = function(){ location.reload(); };
+  }
+  function postApi(obj, rid, tries){
+    var ctl = window.AbortController ? new AbortController() : null;
+    var tm = setTimeout(function(){ if (ctl) ctl.abort(); }, 25000);
+    return fetch(API, { method: 'POST', headers: { 'Content-Type': 'application/json' }, signal: ctl ? ctl.signal : undefined,
+      body: JSON.stringify({ initData: tg.initData, data: obj, rid: rid }) })
+      .then(function(r){ clearTimeout(tm); return r.json().catch(function(){ return { ok: false, reason: 'Javob noto\'g\'ri' }; }); })
+      .catch(function(err){
+        clearTimeout(tm);
+        if (tries > 0) return new Promise(function(res){ setTimeout(res, 1500); }).then(function(){ return postApi(obj, rid, tries - 1); });
+        throw err;
+      });
+  }
+  function send(obj){
+    if (!(tg && tg.initData && window.fetch)) { legacySend(obj); return; }
+    var isSubmit = obj.m !== undefined;
+    var rid = Math.random().toString(36).slice(2) + Date.now().toString(36);
+    if (isSubmit) ovl('<div style="font-size:34px">\u23f3</div><div style="font-size:17px;font-weight:600;margin-top:8px">Javoblar yuborilmoqda\u2026</div>');
+    postApi(obj, rid, 2).then(function(r){
+      if (isSubmit) {
+        if (r && r.ok && r.b !== undefined) { showResult(r); return; }
+        var msg = (r && r.reason) || 'Xatolik yuz berdi';
+        ovl('<div style="font-size:34px">\u26a0\ufe0f</div><div style="font-size:16px;margin:8px 0">' + msg.replace(/</g, '&lt;') + '</div><button id="rsOk" style="' + BTN + 'background:#0f4c5c;color:#fff">Yopish</button>');
+        document.getElementById('rsOk').onclick = function(){ location.reload(); };
+      } else {
+        if (r && r.ok) toast('\ud83d\udce9 Bot chatga yubordi \u2014 chatni tekshiring');
+        else toast((r && r.reason) || 'Xatolik');
+      }
+    }).catch(function(){
+      // server bilan aloqa yo'q — eski usul (oyna yopiladi, lekin natija baribir yetib boradi)
+      var o = document.getElementById('resOv'); if (o) o.remove();
+      legacySend(obj);
+    });
   }
   function submit(auto){
     clearInterval(timer);
