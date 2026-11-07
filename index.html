@@ -188,6 +188,10 @@ img{-webkit-user-drag:none;user-drag:none;-webkit-touch-callout:none}
   var tg = window.Telegram && window.Telegram.WebApp;
   var IDS = []; for (var i = 101; i <= 112; i++) IDS.push(i);
   var DUR = 3 * 3600 * 1000;
+  var FREE = [101];   // hamma uchun bepul mocklar
+  var PU = 0; try { PU = parseInt(new URLSearchParams(location.search).get('pu'), 10) || 0; } catch (e) {}
+  function isPrem(){ return PU * 1000 > Date.now(); }
+  function locked(id){ return FREE.indexOf(id) < 0 && !isPrem(); }
   if (tg) { try { tg.ready(); tg.expand(); document.documentElement.setAttribute('data-theme', tg.colorScheme === 'dark' ? 'dark' : 'light'); } catch (e) {} }
 
   function $(id){ return document.getElementById(id); }
@@ -218,6 +222,7 @@ img{-webkit-user-drag:none;user-drag:none;-webkit-touch-callout:none}
       var badge, cls = 'mc';
       if (ok === undefined) badge = '<span class="bd soon">…</span>';
       else if (!ok) { badge = '<span class="bd soon">⏳ Tez orada</span>'; cls += ' soon'; }
+      else if (locked(id)) { badge = '<span class="bd go">💎 Premium</span>'; }
       else if (s.done) badge = '<span class="bd done">✓ Yuborilgan</span>';
       else if (s.run) badge = '<span class="bd run">Davom etish →</span>';
       else if (s.exp) badge = '<span class="bd run">Vaqt tugagan</span>';
@@ -245,6 +250,7 @@ img{-webkit-user-drag:none;user-drag:none;-webkit-touch-callout:none}
     var c = e.target.closest('.mc'); if (!c) return;
     var id2 = +c.dataset.id;
     if (!ready[id2]) { if (ready[id2] === false) toast('Bu mock tez orada qo\'shiladi ⏳'); return; }
+    if (locked(id2)) { toast('💎 Bu mock Premium obunachilar uchun'); setTimeout(function(){ send({ pr: id2 }); }, 900); return; }
     var s = state(id2);
     if (s.run || s.exp) { openTest(id2); return; }
     $('stT').textContent = 'Mock ' + id2 + (s.done ? ' (qayta ishlash)' : '');
@@ -363,7 +369,8 @@ img{-webkit-user-drag:none;user-drag:none;-webkit-touch-callout:none}
 
   /* ---------- yuborish ---------- */
   function payload(){
-    return { m: cur, a: st.a.map(function(x){ return x || '-'; }).join(''), n: st.n.map(function(x){ return x.trim(); }),
+    var el_ = Math.max(0, Math.round((Date.now() - (parseInt(lsGet('mk_start_' + cur), 10) || Date.now())) / 1000));
+    return { m: cur, e: Math.min(el_, 10800), a: st.a.map(function(x){ return x || '-'; }).join(''), n: st.n.map(function(x){ return x.trim(); }),
              w: st.w.map(function(c){ return c.map(function(x){ return x.trim(); }); }) };
   }
   function send(obj){
