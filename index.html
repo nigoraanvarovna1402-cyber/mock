@@ -395,9 +395,11 @@ img{-webkit-user-drag:none;user-drag:none;-webkit-touch-callout:none}
     h += '<div style="font-size:15px;color:#4a5b66">Ball: <b style="color:#0f4c5c;font-size:20px">' + r.b + '</b>' + (r.lv ? ' \u00b7 Daraja: <b>' + r.lv + '</b>' : ' \u00b7 sertifikat darajasiga yetmadi') + '</div>';
     if (r.r) h += '<div style="margin-top:6px;font-size:15px">' + (r.f ? '\ud83c\udfc6 Reyting: <b>' + r.r[0] + ' / ' + r.r[1] + '</b>' : '\ud83d\udd01 Qayta urinish \u2014 reytingga kirmaydi') + '</div>';
     h += '<div style="margin-top:10px;font-size:13px;color:#6b7b85">To\'liq natija, sertifikat va tahlil tugmalari botga ham yuborildi \ud83d\udce9</div>';
+    h += '<button id="rsCert" style="' + BTN + 'background:#b8860b;color:#fff">\ud83c\udf93 Sertifikat olish</button>';
     h += '<button id="rsMap" style="' + BTN + 'background:#0f4c5c;color:#fff">\ud83d\udcca Savollar xaritasi</button>';
     h += '<button id="rsList" style="' + BTN + 'background:#e8f0f2;color:#0f4c5c">Mocklar ro\'yxati</button>';
     ovl(h);
+    document.getElementById('rsCert').onclick = function(){ send({ cert: r.m }); };
     document.getElementById('rsMap').onclick = function(){ location.href = r.url; };
     document.getElementById('rsList').onclick = function(){ location.reload(); };
   }
@@ -425,7 +427,12 @@ img{-webkit-user-drag:none;user-drag:none;-webkit-touch-callout:none}
         ovl('<div style="font-size:34px">\u26a0\ufe0f</div><div style="font-size:16px;margin:8px 0">' + msg.replace(/</g, '&lt;') + '</div><button id="rsOk" style="' + BTN + 'background:#0f4c5c;color:#fff">Yopish</button>');
         document.getElementById('rsOk').onclick = function(){ location.reload(); };
       } else {
-        if (r && r.ok) toast('\ud83d\udce9 Bot chatga yubordi \u2014 chatni tekshiring');
+        if (r && r.ok && r.cert) {
+          ovl('<div style="font-size:38px">' + (r.photo ? '\ud83d\udcf7' : '\ud83c\udf93') + '</div><div style="font-size:16px;margin:8px 0">' +
+              (r.photo ? 'Botga o\'ting va <b>rasmingizni</b> yuboring \u2014 sertifikat shu rasm bilan tayyorlanadi.' : 'Sertifikatingiz botga yuborildi.') +
+              '</div><button id="rsBot" style="' + BTN + 'background:#0f4c5c;color:#fff">Botga o\'tish</button>');
+          document.getElementById('rsBot').onclick = function(){ try { tg.close(); } catch (e) {} };
+        } else if (r && r.ok) toast('\ud83d\udce9 Bot chatga yubordi \u2014 chatni tekshiring');
         else toast((r && r.reason) || 'Xatolik');
       }
     }).catch(function(){
