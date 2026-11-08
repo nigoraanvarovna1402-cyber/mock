@@ -29,6 +29,7 @@ body{background:var(--bg);color:var(--ink);font:16px/1.4 system-ui,-apple-system
 .dt h4{margin:0 0 8px;font-size:15px}.dt .r{display:flex;justify-content:space-between;align-items:center;padding:4px 0;gap:10px}
 .tag{border-radius:8px;padding:1px 8px;font-size:12px;font-weight:700;margin-left:6px}.tx{background:#fde3e3;color:#b3261e}.tc{background:#dff2ea;color:#1b7a50}.tn{background:var(--line);color:var(--muted)}
 .note{margin:6px 14px;font-size:12px;color:var(--muted);text-align:center}
+.qt{white-space:pre-wrap;font-size:14px;line-height:1.45;margin:0 0 10px;padding-bottom:10px;border-bottom:1px solid var(--line);max-height:46vh;overflow:auto}.sol{margin-top:10px;padding:8px 10px;border-radius:10px;background:var(--line);font-size:13px;color:var(--ink)}.mis{font-weight:700;margin:2px 0 6px}
 .err{margin:30px 18px;text-align:center;color:var(--muted)}
 </style></head><body>
 <div class="hero"><small>Biologiya Tayyorlov Kursi</small><b id="ttl">Mock natijasi</b></div>
@@ -75,17 +76,22 @@ body{background:var(--bg);color:var(--ink);font:16px/1.4 system-ui,-apple-system
   root.appendChild(lg);
   var grid=el('div','g');root.appendChild(grid);
   var dt=el('div','dt');root.appendChild(dt);
-  var btns=[];
+  var btns=[],QT=null,cur=0;
+  try{fetch('m/'+encodeURIComponent(D.m)+'/q.json').then(function(r){return r.ok?r.json():null;}).then(function(j){if(j){QT=j;show(cur);}}).catch(function(){});}catch(e){}
   function show(i){
+    cur=i;
     btns.forEach(function(b,k){b.classList.toggle('sel',k===i);});
     dt.innerHTML='';
     dt.appendChild(el('h4','',(i+1)+'-savol'));
+    if(QT&&QT[String(i+1)])dt.appendChild(el('div','qt',QT[String(i+1)]));
     function row(l,v,tag){var r=el('div','r');r.appendChild(el('span','',l));var b=el('b','',v||'—');if(tag){var t=el('span','tag '+tag[0],tag[1]);b.appendChild(t);}r.appendChild(b);dt.appendChild(r);}
     var s=D.s[i];
     if(i<40){
       var tag=s==='c'?['tc','to‘g‘ri']:s==='n'?['tn','javobsiz']:['tx','xato'];
+      if(s==='x')dt.appendChild(el('div','mis','❌ '+(D.u[i]||'—')+'  →  ✅ '+D.k[i]));
       row('Sizning javobingiz',D.u[i],tag);
       row('To‘g‘ri javob',D.k[i]);
+      if(i>=35)dt.appendChild(el('div','sol','To‘liq yechim kerak bo‘lsa, ustoz bilan bog‘laning: @Akhtamova_Nigora'));
     }else{
       var us=D.u[i]||[],ks=D.k[i]||[];
       var tag2=s==='c'?['tc','yechildi']:s==='p'?['tx','qisman']:s==='n'?['tn','javobsiz']:['tx','xato'];
@@ -95,6 +101,7 @@ body{background:var(--bg);color:var(--ink);font:16px/1.4 system-ui,-apple-system
         row('abcd'.charAt(c)+') sizniki',g,g?(good?['tc','✓']:['tx','xato']):['tn','—']);
         row('abcd'.charAt(c)+') to‘g‘ri',ks[c]);
       }
+      dt.appendChild(el('div','sol','To‘liq yechim kerak bo‘lsa, ustoz bilan bog‘laning: @Akhtamova_Nigora'));
     }
   }
   for(var i=0;i<D.s.length;i++){
