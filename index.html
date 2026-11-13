@@ -2,7 +2,7 @@
 <html lang="uz">
 <head>
 <meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, viewport-fit=cover">
+<meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1, maximum-scale=5, user-scalable=yes, viewport-fit=cover">
 <title>Sertifikat imtihon</title>
 <script src="https://telegram.org/js/telegram-web-app.js"></script>
 <style>
@@ -68,7 +68,8 @@ button{font-family:inherit}
 .pg{margin:12px 12px 0;background:#fff;border-radius:12px;border:1px solid var(--line);overflow:hidden;box-shadow:var(--shadow)}
 .pg img{display:block;width:100%;height:auto}
 .pg .pl{padding:6px 10px;font-size:11px;font-weight:700;color:#8a8473;background:#f3efe6;letter-spacing:.06em}
-#zoomv{position:fixed;inset:0;background:#111;z-index:40;overflow:auto;display:none}
+#pages img,.pg img{touch-action:pan-x pan-y pinch-zoom}
+#zoomv{touch-action:pan-x pan-y pinch-zoom;position:fixed;inset:0;background:#111;z-index:40;overflow:auto;display:none}
 #zoomv.show{display:block}
 #zoomv img{width:230%;max-width:none;display:block;background:#fff}
 #zoomv .x{position:fixed;right:12px;top:12px;z-index:41;border:0;border-radius:12px;background:rgba(0,0,0,.65);color:#fff;font:800 15px system-ui;padding:10px 14px}
