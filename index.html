@@ -149,7 +149,7 @@ img{-webkit-user-drag:none;user-drag:none;-webkit-touch-callout:none}
   <div id="scroll">
     <div class="sec"><b>Test</b><span>1–32 · bitta javob (A–D)</span></div><div class="card" id="s1"></div>
     <div class="sec"><b>Moslashtirish</b><span>33–35 · A–F</span></div><div class="card" id="s2"></div>
-    <div class="sec"><b>Qisqa javob</b><span>36–40 · raqam yozing (3,6 yoki 3.6)</span></div><div class="card" id="s3"></div>
+    <div class="sec"><b>Qisqa javob</b><span>36–40 · raqam yozing (3,6 yoki 3.6). Ikki javob bo‘lsa «;» bilan: 32; 63</span></div><div class="card" id="s3"></div>
     <div class="sec"><b>Yozma ish</b><span>41–43 · har bir javobga alohida katak</span></div><div class="card" id="s4"></div>
     <button class="send" id="send" type="button">Yakunlash va tekshirish ✈️</button>
   </div>
@@ -319,7 +319,7 @@ img{-webkit-user-drag:none;user-drag:none;-webkit-touch-callout:none}
     $('s1').innerHTML = h; h = '';
     for (i = 32; i < 35; i++) h += '<div class="row six"><div class="n">' + (i + 1) + '</div>' + bubbles(i, 'ABCDEF') + '</div>';
     $('s2').innerHTML = h; h = '';
-    for (var j = 0; j < 5; j++) h += '<div class="rowx"><div class="n">' + (36 + j) + '</div><input class="t' + (st.n[j] ? ' has' : '') + '" data-n="' + j + '" inputmode="decimal" autocomplete="off" maxlength="20" placeholder="Javob" value="' + esc(st.n[j]) + '"></div>';
+    for (var j = 0; j < 5; j++) h += '<div class="rowx"><div class="n">' + (36 + j) + '</div><input class="t' + (st.n[j] ? ' has' : '') + '" data-n="' + j + '" inputmode="text" autocomplete="off" maxlength="30" placeholder="Javob" value="' + esc(st.n[j]) + '"></div>';
     $('s3').innerHTML = h;
     buildW();
   }
