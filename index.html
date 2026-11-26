@@ -342,7 +342,7 @@ cur = id; load(id); Q = null; NP = 0;
 $('list').classList.add('hide'); $('test').classList.remove('hide');
 $('ttl').textContent = 'Mock ' + id;
 $('pages').innerHTML = ''; $('qs').innerHTML = '<div class="qsec"><span>Savollar yuklanmoqda…</span></div>';
-countPages(id, function(n){ NP = n; });
+countPages(id, function(n){ if (cur === id) NP = n; });
 fetch('m/' + id + '/q.json?v=' + Date.now()).then(function(r){ if (!r.ok) throw 0; return r.json(); })
 .then(function(q){ Q = q; buildQs(); })
 .catch(function(){ $('qs').innerHTML = ''; addPage(1); }); // savollar fayli bo'lmasa — eski usul: sahifa rasmlari
