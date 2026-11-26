@@ -365,7 +365,12 @@ $('pages').appendChild(wrap);
 im.src = 'm/' + cur + '/' + n + '.jpg';
 }
 
-function qText(n){ return String((Q && Q[String(n)]) || '').replace(/\r/g, ''); }
+function qText(n){
+var t = String((Q && Q[String(n)]) || '').replace(/\r/g, '');
+t = t.replace(/\s*(JAVOBLAR\s+KALITI|Javoblar\s+kaliti|Yozma\s+javoblar\s*:)[\s\S]*$/, ''); // fayl oxiridagi javoblar kalitini ko'rsatmaslik
+t = t.replace(/\s*[a-d]\)\s*_{10,}/g, '').replace(/_{10,}/g, ''); // javob yoziladigan bo'sh chiziqlar
+return t.trim();
+}
 function optHtml(i, letters, texts){
 var h = '';
 for (var k = 0; k < letters.length; k++) {
